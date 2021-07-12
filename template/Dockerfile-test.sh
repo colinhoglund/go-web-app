@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cat <<EOF > "${GIT_ROOT}/build/Dockerfile-test"
-FROM golangci/golangci-lint:v1.38.0-alpine as cache
+FROM ${GOLANGCI_IMAGE} as cache
 ENV GOLANGCI_LINT_CACHE /root/.cache/go-build
 WORKDIR \$GOPATH/src/${GO_MODULE}
 

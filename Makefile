@@ -1,4 +1,7 @@
-all: go.mod main.go build/Dockerfile-test
+all: go.mod main.go Dockerfile build/Dockerfile-test
+
+export GO_VERSION := 1.16
+export GOLANGCI_IMAGE := golangci/golangci-lint:v1.38.0-alpine
 
 export GIT_ROOT := $(shell git rev-parse --show-toplevel)
 export GO_MODULE := $(shell git config --get remote.origin.url | grep -o 'github\.com[:/][^.]*' | tr ':' '/')
@@ -13,13 +16,16 @@ self-destruct:
 
 .PHONY: clean
 clean:
-	rm -rf go.mod main.go build/ bin/ dist/
+	rm -rf go.mod main.go Dockerfile build/ bin/ dist/
 
 go.mod:
-	go mod init $(GO_MODULE)
+	./template/go.mod.sh
 
 main.go:
 	./template/main.go.sh
+
+Dockerfile:
+	./template/Dockerfile.sh
 
 build/Dockerfile-test:
 	mkdir -p build

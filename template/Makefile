@@ -11,15 +11,20 @@ test: ## Run tests in local environment
 
 .PHONY: docker
 docker: ## Build local development docker image with cached go modules, builds, and tests
-	@docker build -f build/Dockerfile-test -t $(CMD_NAME):latest .
+	@docker build -f build/Dockerfile-test -t $(CMD_NAME)-test:latest .
 
 .PHONY: docker-test
 docker-test: ## Run tests using local development docker image
-	@docker run -v $(shell pwd):/go/src/$(GO_MODULE):delegated $(CMD_NAME) make test RUN=$(RUN) PKG=$(PKG)
+	@docker run -v $(shell pwd):/go/src/$(GO_MODULE):delegated $(CMD_NAME)-test make test RUN=$(RUN) PKG=$(PKG)
 
 .PHONY: docker-snyk
 docker-snyk: ## Run local snyk scan, SNYK_TOKEN environment variable must be set
 	@docker run --rm -e SNYK_TOKEN -w /go/src/$(GO_MODULE) -v $(shell pwd):/go/src/$(GO_MODULE):delegated snyk/snyk:golang
+
+.PHONY: docker-run
+docker-run:
+	@docker build -t $(CMD_NAME):latest .
+	@docker run -p 8080:8080 $(CMD_NAME):latest
 
 dist: ## Cross compile binaries into ./dist/
 	mkdir bin dist
