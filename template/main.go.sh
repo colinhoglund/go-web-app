@@ -14,7 +14,7 @@ import (
 func main() {
 	addr := os.Getenv("APP_ADDR")
 	if addr == "" {
-		addr = ":8080"
+		addr = ":${DEFAULT_APP_PORT}"
 	}
 
 	log.Printf("Starting server on %s\n", addr)

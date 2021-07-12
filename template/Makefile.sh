@@ -27,7 +27,7 @@ docker-snyk: ## Run local snyk scan, SNYK_TOKEN environment variable must be set
 .PHONY: docker-run
 docker-run: ## Build and run the application in a local docker container
 	@docker build -t \$(CMD_NAME):latest .
-	@docker run -p ${APP_PORT}:${APP_PORT} \$(CMD_NAME):latest
+	@docker run -p ${DEFAULT_APP_PORT}:${DEFAULT_APP_PORT} \$(CMD_NAME):latest
 
 dist: ## Cross compile binaries into ./dist/
 	mkdir bin dist

@@ -2,7 +2,7 @@ all: go.mod main.go Dockerfile build/Dockerfile-test
 
 export GO_VERSION := 1.16
 export GOLANGCI_IMAGE := golangci/golangci-lint:v1.38.0-alpine
-export APP_PORT := 8080
+export DEFAULT_APP_PORT := 8080
 
 export GIT_ROOT := $(shell git rev-parse --show-toplevel)
 export GO_MODULE := $(shell git config --get remote.origin.url | grep -o 'github\.com[:/][^.]*' | tr ':' '/')
