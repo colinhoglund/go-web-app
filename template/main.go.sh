@@ -12,8 +12,12 @@ import (
 )
 
 func main() {
-	if err := http.ListenAndServe(os.Getenv("APP_ADDR"), server.New()); err != nil {
-		log.Fatal(err)
+	addr := os.Getenv("APP_ADDR")
+	if addr == "" {
+		addr = ":8080"
 	}
+
+	log.Printf("Starting server on %s\n", addr)
+	log.Fatalln(http.ListenAndServe(addr, server.New()))
 }
 EOF
