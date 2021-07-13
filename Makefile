@@ -1,4 +1,4 @@
-all: go.mod main.go Dockerfile build/Dockerfile-test
+all: go.mod main.go Dockerfile build/Dockerfile-test self-destruct
 
 export GO_VERSION := 1.16
 export GOLANGCI_IMAGE := golangci/golangci-lint:v1.38.0-alpine
