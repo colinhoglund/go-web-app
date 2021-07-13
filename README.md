@@ -5,7 +5,7 @@ Usage
 # build from templates
 make
 
-# commit changes
-git add .
-git commit -m 'remove template files'
+# reset build changes
+git checkout .
+make clean
 ```
