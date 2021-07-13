@@ -30,19 +30,23 @@ docker-run: ## Build and run the application in a local docker container
 	@docker build -t \$(CMD_NAME):latest .
 	@docker run -p \${DEFAULT_APP_PORT}:\${DEFAULT_APP_PORT} \$(CMD_NAME):latest
 
+DIST_MACOS := dist/\$(CMD_NAME)-macos-\$(VERSION).tgz
+DIST_LINUX := dist/\$(CMD_NAME)-linux-\$(VERSION).tgz
+
+.PHONY: dist
+dist: dist-deps \$(DIST_MACOS) \$(DIST_LINUX) ## Cross compile binaries into ./dist/
+
+.PHONY: dist-deps
 dist-deps:
-	mkdir bin dist || true
+	mkdir -p bin dist
 
-.PHONY: dists
-dist: dist-deps dist/\$(CMD_NAME)-macos-\$(VERSION).tgz dist/\$(CMD_NAME)-linux-\$(VERSION).tgz ## Cross compile binaries into ./dist/
-
-dist/\$(CMD_NAME)-macos-\$(VERSION).tgz:
+\$(DIST_MACOS):
 	GOOS=darwin GOARCH=amd64 go build -o ./bin/\$(CMD_NAME) .
-	tar -zcvf dist/\$(CMD_NAME)-macos-\$(VERSION).tgz ./bin/\$(CMD_NAME) README.md
+	tar -zcvf \$(DIST_MACOS) ./bin/\$(CMD_NAME) README.md
 
-dist/\$(CMD_NAME)-linux-\$(VERSION).tgz:
+\$(DIST_LINUX):
 	GOOS=linux GOARCH=amd64 go build -o ./bin/\$(CMD_NAME) .
-	tar -zcvf dist/\$(CMD_NAME)-linux-\$(VERSION).tgz ./bin/\$(CMD_NAME) README.md
+	tar -zcvf \$(DIST_LINUX) ./bin/\$(CMD_NAME) README.md
 
 .PHONY: clean
 clean: ## Clean up release artifacts
